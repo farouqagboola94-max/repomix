@@ -21,7 +21,7 @@ export class GoParseStrategy extends BaseParseStrategy {
     capture: { node: Node; name: string },
     lines: string[],
     processedChunks: Set<string>,
-    _context: ParseContext,
+    context: ParseContext,
   ): string | null {
     const { node, name } = capture;
     const startRow = node.startPosition.row;
@@ -35,6 +35,9 @@ export class GoParseStrategy extends BaseParseStrategy {
 
     // Comments
     if (captureTypes.has(CaptureType.Comment)) {
+      if (context.config.output.removeComments) {
+        return null;
+      }
       return this.parseBlockDeclaration(lines, startRow, endRow, processedChunks).content;
     }
 

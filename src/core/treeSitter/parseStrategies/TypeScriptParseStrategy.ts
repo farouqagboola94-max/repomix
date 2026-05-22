@@ -21,7 +21,7 @@ export class TypeScriptParseStrategy extends BaseParseStrategy {
     capture: { node: Node; name: string },
     lines: string[],
     processedChunks: Set<string>,
-    _context: ParseContext,
+    context: ParseContext,
   ): string | null {
     const { node, name } = capture;
     const startRow = node.startPosition.row;
@@ -55,6 +55,9 @@ export class TypeScriptParseStrategy extends BaseParseStrategy {
 
     // Comment capture
     if (captureTypes.has(CaptureType.Comment)) {
+      if (context.config.output.removeComments) {
+        return null;
+      }
       return lines
         .slice(startRow, endRow + 1)
         .join('\n')

@@ -7,7 +7,7 @@ export class CssParseStrategy extends BaseParseStrategy {
     capture: { node: Node; name: string },
     lines: string[],
     processedChunks: Set<string>,
-    _context: ParseContext,
+    context: ParseContext,
   ): string | null {
     const { node, name } = capture;
     const startRow = node.startPosition.row;
@@ -31,6 +31,9 @@ export class CssParseStrategy extends BaseParseStrategy {
     // Extract all lines for comments, only the first line for others
     let selectedLines: string[];
     if (isCommentCapture) {
+      if (context.config.output.removeComments) {
+        return null;
+      }
       selectedLines = lines.slice(startRow, endRow + 1);
     } else {
       // For selectors and at-rules, extract only the first line

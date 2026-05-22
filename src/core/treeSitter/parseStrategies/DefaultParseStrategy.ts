@@ -7,7 +7,7 @@ export class DefaultParseStrategy extends BaseParseStrategy {
     capture: { node: Node; name: string },
     lines: string[],
     processedChunks: Set<string>,
-    _context: ParseContext,
+    context: ParseContext,
   ): string | null {
     const { node, name } = capture;
     const startRow = node.startPosition.row;
@@ -24,6 +24,10 @@ export class DefaultParseStrategy extends BaseParseStrategy {
     const shouldSelect = isNameCapture || isCommentCapture || isImportCapture;
 
     if (!shouldSelect) {
+      return null;
+    }
+
+    if (isCommentCapture && context.config.output.removeComments) {
       return null;
     }
 

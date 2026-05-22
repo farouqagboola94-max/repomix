@@ -34,7 +34,6 @@ let languageParserSingleton: LanguageParser | null = null;
 
 export const CHUNK_SEPARATOR = '⋮----';
 
-// TODO: Do something with config: RepomixConfigMerged, it is not used (yet)
 export const parseFile = async (fileContent: string, filePath: string, config: RepomixConfigMerged) => {
   const languageParser = await getLanguageParserSingleton();
 
